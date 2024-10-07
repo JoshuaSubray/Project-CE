@@ -1,3 +1,3 @@
 # Project-MAD
-Name subject to change.
+Project for mobile application development.
 Due: October 31st.
