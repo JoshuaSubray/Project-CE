@@ -1,5 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+/* dependencies.
+
+*/
 
 export default function App() {
   return (
@@ -18,3 +21,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+/*TODO:
+API: https://api.nbp.pl/en.html
+more than three screens.
+stack navigation.
+redux data store.
+animation API and gestures.
+styling.
+error handling.
+*/
