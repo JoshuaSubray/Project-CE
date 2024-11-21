@@ -1,4 +1,6 @@
 # Project-CE
-Due: November 20th - Phase 1.
+Due:
+Phase 2 - December 11th
+
 Project for mobile application development.
-https://api.nbp.pl/en.html
+API: https://api.nbp.pl/en.html
