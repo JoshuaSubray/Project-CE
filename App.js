@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Table from './components/Table';
 import Convertor from './components/Converter';
 import Gold from './components/Gold';
+import GoldList from './components/GoldList';
 
 /* npm install
 @expo/ngrok@^4.1.0
@@ -52,6 +53,7 @@ export default function App() {
       <Stack.Screen name="Table" component={Table}/>
       <Stack.Screen name="Convertor" component={Convertor}/>
       <Stack.Screen name="Gold" component={Gold}/>
+      <Stack.Screen name='GoldList' component={GoldList}/>
     </Stack.Navigator>
   </NavigationContainer>
   );

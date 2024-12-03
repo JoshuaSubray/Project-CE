@@ -13,28 +13,48 @@ const Gold = ({navigation, route}) => {
     const url = `https://api.nbp.pl/api/${urlData}`
     const dataFromApi = async() => {
         //const url = `https://api.nbp.pl/api/${urlData}`
-        // try {
-        //     const response = await fetch(url)
-        //     console.log("url: "+url)
-        //     if (!response.ok) {
-        //         throw new Error(response.status);
-        //     }
-        //     const data = response.json()
-        //     setGoldData(data)
-        //     return data
-        // } catch (error) {
-        //     console.log("Error: "+error)
-        // }
+        console.log("url: "+url)
+        try {
+            const response = await fetch(url)
+            console.log("url: "+url)
+            if (!response.ok) {
+                throw new Error(response.status);
+            }
+            const data = response.json()
+            setGoldData(data)
+            console.log(data)
+            //console.log(data.CenaZlota.date)
+            return data
+        } catch (error) {
+            console.log("Error: "+error)
+        }
     }
     const generate = () => {
-        console.log("url: "+url)
+        //console.log("url: "+url)
         navigation.navigate('Gold')
         //console.log("data "+urlData)
         //navigation.navigate('GoldList', {api: url})
     }
-    // useEffect(() => {
-    //     dataFromApi()
-    // }, [])
+    const list = () => {
+        return(
+            <View style={styles.container}>
+            <FlatList
+            data={goldData}
+            keyExtractor={({data}) => data.toString()}
+            renderItem={({item}) => (
+                <View>
+                    <Text>Date: {item.CenaZlota.data}</Text>
+                    <Text>Price for 1 gram of gold: {item.CenaZlota.cena}</Text>
+                </View>
+            )}
+            ></FlatList>
+            </View>
+        )
+    }
+    useEffect(() => {
+        dataFromApi()
+        list()
+    }, [urlData])
     return (
         <View style={styles.container}>
             <Text>Gold</Text>
@@ -53,7 +73,7 @@ const Gold = ({navigation, route}) => {
             <Button
             title='Get gold prices form today'
             onPress={() => {
-                setUrlData("cenyzola/today")
+                setUrlData("cenyzlota/today")
                 generate()
             }}
             ></Button>
@@ -63,7 +83,7 @@ const Gold = ({navigation, route}) => {
                 generate()
             }}
             ></Button>
-            <FlatList
+            {/* <FlatList
             data={goldData}
             keyExtractor={({data}) => data.toString()}
             renderItem={({item}) => (
@@ -72,7 +92,7 @@ const Gold = ({navigation, route}) => {
                     <Text>Price for 1 gram of gold: {item.CenaZlota.cena}</Text>
                 </View>
             )}
-            ></FlatList>
+            ></FlatList> */}
         </View>
     )
 }
