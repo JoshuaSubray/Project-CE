@@ -21,11 +21,11 @@ const Stack = createNativeStackNavigator();
 // TODO: index is the home page. this'll have information and navigation to the program's functions.
 
 // navbar.
-function Index({navigation}) {
+function Index({ navigation }) {
   return (
     <View style={styles.container}>
       <Text>Welcome to Currency Exchange!</Text>
-      
+
       <Button
         title="Convertor"
         onPress={() => navigation.navigate("Convertor")}
@@ -49,14 +49,14 @@ function Index({navigation}) {
 export default function App() {
   return (
     <NavigationContainer>
-    <Stack.Navigator initialRouteName="Index">
-      <Stack.Screen name="Index" component={Index}/>
-      <Stack.Screen name="Table" component={Table}/>
-      <Stack.Screen name="Convertor" component={Convertor}/>
-      <Stack.Screen name="Gold" component={Gold}/>
-      <Stack.Screen name='GoldList' component={GoldList}/>
-    </Stack.Navigator>
-  </NavigationContainer>
+      <Stack.Navigator initialRouteName="Index">
+        <Stack.Screen name="Index" component={Index} />
+        <Stack.Screen name="Table" component={Table} />
+        <Stack.Screen name="Convertor" component={Convertor} />
+        <Stack.Screen name="Gold" component={Gold} />
+        <Stack.Screen name='GoldList' component={GoldList} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -68,17 +68,3 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-/*TODO:.
-API: https://api.nbp.pl/en.html
-more than three screens.
-stack navigation.
-redux data store.
-animation API and gestures.
-styling.
-error handling.
-
-table/index.
-convertor.
-gold.
-*/

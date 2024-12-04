@@ -16,11 +16,14 @@ const Convertor = ({ navigation, route }) => {
     const [rates, setRates] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const [table, setTable] = useState('A');
+
     // fetch currency rates from API.
     useEffect(() => {
         const fetchRates = async () => {
+            setLoading(true);
             try {
-                const response = await fetch('https://api.nbp.pl/api/exchangerates/tables/A/?format=json');
+                const response = await fetch(`https://api.nbp.pl/api/exchangerates/tables/${table}/?format=json`);
                 const data = await response.json();
                 setRates(data[0].rates);
                 setLoading(false);
@@ -30,7 +33,7 @@ const Convertor = ({ navigation, route }) => {
             }
         }
         fetchRates();
-    }, []);
+    }, [table]);
 
     // handle currency conversion.
     const handleConvert = (value) => {
@@ -59,6 +62,30 @@ const Convertor = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
+            {/* select table. */}
+            <Text>Table Selected:</Text>
+            <Picker
+                style={{ height: 75, width: '75%' }}
+                selectedValue={table}
+                onValueChange={(value) => setTable(value)}
+            >
+                <Picker.Item
+                    label='Table A'
+                    value='A'
+                />
+
+                <Picker.Item
+                    label='Table B'
+                    value='B'
+                />
+
+                <Picker.Item
+                    label='Table C'
+                    value='C'
+                />
+            </Picker>
+
+
             {/* Input: */}
             <Text>Amount to Convert:</Text>
             <TextInput
