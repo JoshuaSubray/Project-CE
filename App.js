@@ -13,6 +13,7 @@ import GoldList from './components/GoldList';
 @react-navigation/native
 @react-navigation/native-stack
 react-native-screens
+@react-native-picker/picker
 */
 
 const Stack = createNativeStackNavigator();
@@ -26,13 +27,13 @@ function Index({navigation}) {
       <Text>Welcome to Currency Exchange!</Text>
       
       <Button
-        title="Table"
-        onPress={() => navigation.navigate("Table")}
+        title="Convertor"
+        onPress={() => navigation.navigate("Convertor")}
       />
 
       <Button
-        title="Convertor"
-        onPress={() => navigation.navigate("Convertor")}
+        title="Table"
+        onPress={() => navigation.navigate("Table")}
       />
 
       <Button
