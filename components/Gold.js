@@ -17,6 +17,9 @@ const Gold = ({ navigation, route }) => {
     useEffect(() => {
         const fetchGoldRates = async () => {
             try {
+                // console.log("date: "+Intl.DateTimeFormat("ja-jp", {
+                //     dateStyle: "short",
+                // }).format(new Date()).replace('/', '-').replace('/', '-'))
                 const response = await fetch('https://api.nbp.pl/api/cenyzlota/?format=json');
                 const data = await response.json();
                 setGoldData(data[0]);
@@ -66,19 +69,19 @@ const Gold = ({ navigation, route }) => {
         }
     }
     const generate = () => {
-        const fetchGoldTimeline = async() => {
-            try {
-            const response = await fetch(`https://api.nbp.pl/api/cenyzlota/${start}/${end}/?format=json`);
-            const data = await response.json();
-            setGoldData(data);
-                console.log(goldData)
-                setLoading(false);
-            } catch (error) {
-                console.error(error);
-                setLoading(false);
-            }
-        }
-        fetchGoldTimeline()
+        // const fetchGoldTimeline = async() => {
+        //     try {
+        //     const response = await fetch(`https://api.nbp.pl/api/cenyzlota/${start}/${end}/?format=json`);
+        //     const data = await response.json();
+        //     setGoldData(data);
+        //         console.log(goldData)
+        //         setLoading(false);
+        //     } catch (error) {
+        //         console.error(error);
+        //         setLoading(false);
+        //     }
+        // }
+        //fetchGoldTimeline()
         // return(
         //     <View style={styles.container}>
         //         <Text>Date: {goldData.data}</Text>
@@ -88,7 +91,7 @@ const Gold = ({ navigation, route }) => {
         //console.log("url: "+url)
         //navigation.navigate('Gold')
         //console.log("data "+urlData)
-        //navigation.navigate('GoldList', {api: url})
+        navigation.navigate('GoldList', {start: start, end: end})
     }
     // const list = () => {
     //     return (
