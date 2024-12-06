@@ -2,30 +2,44 @@ import { useState, useEffect } from 'react';
 import { Text, View, Button, TextInput, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { styles } from '../App';
-/*TODO:
-Since this API also keeps track of the historical exchange rates, the function will also allow a user to select the date of their choice and convert the currencies and have the value at that particular time output.
-*/
 
 const Convertor = ({ navigation, route }) => {
+    // component properties.
+    const [loading, setLoading] = useState(true);
+    // convertor properties.
     const [inputValue, setInputValue] = useState('');
     const [outputValue, setOutputValue] = useState('');
-
     const [inputCurrency, setInputCurrency] = useState('CAD');
     const [outputCurrency, setOutputCurrency] = useState('USD');
-
+    // API properties.
+    const [no, setNo] = useState('');
     const [rates, setRates] = useState([]);
-    const [loading, setLoading] = useState(true);
-
     const [table, setTable] = useState('A');
+    const [effectiveDate, setEffectiveDate] = useState('');
+    const [availableDates, setAvailableDates] = useState([]);
+    const [inputDate, setInputDate] = useState('');
 
     // fetch currency rates from API.
     useEffect(() => {
         const fetchRates = async () => {
             setLoading(true);
             try {
+                // fetch API data.
                 const response = await fetch(`https://api.nbp.pl/api/exchangerates/tables/${table}/?format=json`);
                 const data = await response.json();
+
+                // get available dates.
+                const dates = data.map(item => item.effectiveDate);
+                setAvailableDates(dates);
+
+                // set default date to latest date from API.
+                setEffectiveDate(dates[0]);
+                setInputDate(dates[0]); // default date for TextInput.
+
+                // API properties.
+                setNo(data[0].no);
                 setRates(data[0].rates);
+
                 setLoading(false);
             } catch (error) {
                 console.error(error);
@@ -33,7 +47,31 @@ const Convertor = ({ navigation, route }) => {
             }
         }
         fetchRates();
-    }, [table]);
+    }, [table]); // refreshes when any value in this array changes.
+
+    // whenever date changes, update the properties.
+    const handleDateChange = async (value) => {
+        setInputDate(value);
+
+        try { // check if date is available within the API.
+            const response = await fetch(`https://api.nbp.pl/api/exchangerates/tables/${table}/${value}/?format=json`);
+            const data = await response.json();
+
+            // if table for selected date exists, update properties.
+            if (data && data[0]) {
+                const ratesData = data[0].rates;
+                setEffectiveDate(value);
+                setRates(data[0].rates)
+            } else {
+                console.log("ERROR: Date not found.");
+                setRates([]); // clear rates.
+            }
+        } catch (error) {
+            console.error(error);
+            console.log("ERROR: Invalid date format.");
+            setRates([]); // clear rates.
+        }
+    }
 
     // handle currency conversion.
     const handleConvert = (value) => {
@@ -62,6 +100,18 @@ const Convertor = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
+            {/* select date */}
+            <Text>Date Selected:</Text>
+            <TextInput
+                placeholder="YYYY-MM-DD"
+                value={inputDate}
+                onChangeText={handleDateChange}
+            />
+
+            {/* <Text>Date: {effectiveDate}</Text> */}
+            <Text>Table ID: {no}</Text>
+
+            {/* Body: */}
             {/* select table. */}
             <Text>Table Selected:</Text>
             <Picker
@@ -111,7 +161,7 @@ const Convertor = ({ navigation, route }) => {
                 {/* for-each rate available, create a selectable item. */}
                 {rates.map((rate) => (
                     <Picker.Item
-                        label={rate.code}
+                        label={`${rate.code} ($${rate.mid}) - ${rate.currency}`}
                         key={rate.code}
                         value={rate.code}
                     />
@@ -138,7 +188,7 @@ const Convertor = ({ navigation, route }) => {
                 {/* for-each rate available, create a selectable item. */}
                 {rates.map((rate) => (
                     <Picker.Item
-                        label={rate.code}
+                        label={`${rate.code} ($${rate.mid}) - ${rate.currency}`}
                         key={rate.code}
                         value={rate.code}
                     />
