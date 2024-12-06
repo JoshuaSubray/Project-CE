@@ -59,20 +59,28 @@ const Convertor = ({ navigation, route }) => {
 
         try { // check if date is available within the API.
             const response = await fetch(`https://api.nbp.pl/api/exchangerates/tables/${table}/${value}/?format=json`);
-            const data = await response.json();
 
-            // if table for selected date exists, update properties.
-            if (data && data[0]) {
-                const ratesData = data[0].rates;
-                setEffectiveDate(value);
-                setRates(data[0].rates)
+            if (response.ok) {
+                const data = await response.json();
+
+                // if table for selected date exists, update properties.
+                if (data && data[0]) {
+                    const ratesData = data[0].rates;
+                    setEffectiveDate(value);
+                    setRates(data[0].rates)
+
+                } else {
+                    // console.error(`ERROR: Invalid date format.`);
+                    console.error(`ERROR: Date unavailable.`);
+                    setRates([]); // clear rates.
+                }
             } else {
-                console.log("ERROR: Date not found.");
+                // console.error(`ERROR: API response failed.`);
+                console.error(`ERROR: Date unavailable.`);
                 setRates([]); // clear rates.
             }
         } catch (error) {
             console.error(error);
-            console.log("ERROR: Invalid date format.");
             setRates([]); // clear rates.
         }
     }
@@ -108,7 +116,7 @@ const Convertor = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             {/* select date */}
-            <Text>Date Selected:</Text>
+            <Text>Date:</Text>
             <TextInput
                 placeholder="YYYY-MM-DD"
                 value={inputDate}
@@ -120,7 +128,6 @@ const Convertor = ({ navigation, route }) => {
 
             {/* Body: */}
             {/* select table. */}
-            <Text>Table Selected:</Text>
             <Picker
                 style={{ height: 75, width: '75%' }}
                 selectedValue={table}
@@ -145,7 +152,6 @@ const Convertor = ({ navigation, route }) => {
 
 
             {/* Input: */}
-            <Text>Amount to Convert:</Text>
             <TextInput
                 placeholder='Enter amount to convert.'
                 keyboardType='numeric'
@@ -154,7 +160,7 @@ const Convertor = ({ navigation, route }) => {
             />
 
             {/* currency to convert */}
-            <Text>Select Input Currency:</Text>
+            <Text>Input Currency:</Text>
             <Picker
                 style={{ height: 75, width: '75%' }}
                 selectedValue={inputCurrency}
@@ -171,13 +177,12 @@ const Convertor = ({ navigation, route }) => {
             </Picker>
 
             {/* Output: */}
-            <Text>Converted Amount:</Text>
             <TextInput
                 placeholder='Converted amount.'
                 value={outputValue}
                 editable={false}
             />
-
+            <Text>Output Currency:</Text>
             <Picker
                 style={{ height: 75, width: '75%' }}
                 selectedValue={outputCurrency}
@@ -194,7 +199,11 @@ const Convertor = ({ navigation, route }) => {
             </Picker>
 
             {/* summary */}
-            <Text>{inputValue} {inputCurrency} equals {outputValue} {outputCurrency}.</Text>
+            <Text> {/* only appears when all parameters are present. */}
+                {inputValue && inputCurrency && outputValue && outputCurrency ? (
+                    `${inputValue} ${inputCurrency} equals ${outputValue} ${outputCurrency}.`) :
+                    null}
+            </Text>
         </View>
     )
 }
