@@ -42,12 +42,6 @@ const Gold = ({ navigation, route }) => {
         );
     }
 
-
-
-
-
-
-
     const dataFromApi = async () => {
         //const url = `https://api.nbp.pl/api/${urlData}`
         console.log("url: " + url)
@@ -68,6 +62,7 @@ const Gold = ({ navigation, route }) => {
         }
     }
     const generate = () => {
+        fetchGoldTimeline();
         // const fetchGoldTimeline = async() => {
         //     try {
         //     const response = await fetch(`https://api.nbp.pl/api/cenyzlota/${start}/${end}/?format=json`);
@@ -90,7 +85,7 @@ const Gold = ({ navigation, route }) => {
         //console.log("url: "+url)
         //navigation.navigate('Gold')
         //console.log("data "+urlData)
-        navigation.navigate('GoldList', {start: start, end: end})
+        // navigation.navigate('GoldList', { start: start, end: end })
     }
     // const list = () => {
     //     return (
@@ -112,6 +107,22 @@ const Gold = ({ navigation, route }) => {
     //     dataFromApi()
     //     list()
     // }, [urlData])
+
+    const fetchGoldTimeline = async () => {
+        console.log("start: " + start)
+        console.log("end: " + end)
+        try {
+            const response = await fetch(`https://api.nbp.pl/api/cenyzlota/${start}/${end}/?format=json`);
+            const data = await response.json();
+            setGoldData(data);
+            console.log(goldData)
+            //setLoading(false);
+        } catch (error) {
+            console.error(error);
+            //setLoading(false);
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Text>Gold</Text>
@@ -135,16 +146,16 @@ const Gold = ({ navigation, route }) => {
             <Text>Current gold price</Text>
             <Text>Date: {goldData.data}</Text>
             <Text>Price: {goldData.cena}</Text>
-            {/* <FlatList
-            data={goldData}
-            keyExtractor={({data}) => data.toString()}
-            renderItem={({item}) => (
-                <View>
-                    <Text>Date: {item.CenaZlota.data}</Text>
-                    <Text>Price for 1 gram of gold: {item.CenaZlota.cena}</Text>
-                </View>
-            )}
-            ></FlatList> */}
+            <FlatList
+                data={goldData}
+                keyExtractor={({ data }) => data.toString()}
+                renderItem={({ item }) => (
+                    <View>
+                        <Text>Date: {item.data}</Text>
+                        <Text>Price for 1 gram of gold: {item.cena}</Text>
+                    </View>
+                )}
+            ></FlatList>
         </View>
     )
 }
