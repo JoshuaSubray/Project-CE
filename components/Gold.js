@@ -15,14 +15,10 @@ const Gold = ({ navigation, route }) => {
     const [start, setStart] = useState('')
     const [end, setEnd] = useState('')
     const [loading, setLoading] = useState(true);
-    const url = `https://api.nbp.pl/api/${urlData}`
 
     useEffect(() => {
         const fetchGoldRates = async () => {
             try {
-                // console.log("date: "+Intl.DateTimeFormat("ja-jp", {
-                //     dateStyle: "short",
-                // }).format(new Date()).replace('/', '-').replace('/', '-'))
                 const response = await fetch('https://api.nbp.pl/api/cenyzlota/?format=json');
                 const data = await response.json();
                 setGoldData(data[0]);
@@ -46,6 +42,12 @@ const Gold = ({ navigation, route }) => {
         );
     }
 
+
+
+
+
+
+
     const dataFromApi = async () => {
         //const url = `https://api.nbp.pl/api/${urlData}`
         console.log("url: " + url)
@@ -66,7 +68,6 @@ const Gold = ({ navigation, route }) => {
         }
     }
     const generate = () => {
-        fetchGoldTimeline();
         // const fetchGoldTimeline = async() => {
         //     try {
         //     const response = await fetch(`https://api.nbp.pl/api/cenyzlota/${start}/${end}/?format=json`);
@@ -89,7 +90,7 @@ const Gold = ({ navigation, route }) => {
         //console.log("url: "+url)
         //navigation.navigate('Gold')
         //console.log("data "+urlData)
-        // navigation.navigate('GoldList', { start: start, end: end })
+        navigation.navigate('GoldList', {start: start, end: end})
     }
     // const list = () => {
     //     return (
@@ -111,26 +112,10 @@ const Gold = ({ navigation, route }) => {
     //     dataFromApi()
     //     list()
     // }, [urlData])
-
-    const fetchGoldTimeline = async () => {
-        console.log("start: " + start)
-        console.log("end: " + end)
-        try {
-            const response = await fetch(`https://api.nbp.pl/api/cenyzlota/${start}/${end}/?format=json`);
-            const data = await response.json();
-            setGoldData(data);
-            console.log(goldData)
-            //setLoading(false);
-        } catch (error) {
-            console.error(error);
-            //setLoading(false);
-        }
-    }
-
     return (
         <View style={styles.container}>
             <Text>Gold</Text>
-            <Text>You can use this form to get gold prices from to dates that you want (dates must be entered in a YYYY-MM-DD format for example 1999-01-01 for January 1st, 1999)</Text>
+            <Text>You can use this form to get gold prices from to dates that you want (dates must be entered in a YYYY-MM-DD format). You can not get gold prices from more then 1 year ago</Text>
             <TextInput
                 placeholder='Enter start date'
                 onChangeText={setStart}
@@ -141,14 +126,6 @@ const Gold = ({ navigation, route }) => {
                 onChangeText={setEnd}
                 value={end}
             ></TextInput>
-            {/* <Text>You can press this button to get the gold prices from today</Text> */}
-            {/* <Button
-                title='Get gold prices form today'
-                onPress={() => {
-                    setUrlData("cenyzlota/today")
-                    generate()
-                }}
-            ></Button> */}
             <Button
                 title='Get gold'
                 onPress={() => {
@@ -158,16 +135,16 @@ const Gold = ({ navigation, route }) => {
             <Text>Current gold price</Text>
             <Text>Date: {goldData.data}</Text>
             <Text>Price: {goldData.cena}</Text>
-            <FlatList
+            {/* <FlatList
             data={goldData}
             keyExtractor={({data}) => data.toString()}
             renderItem={({item}) => (
                 <View>
-                    <Text>Date: {item.data}</Text>
-                    <Text>Price for 1 gram of gold: {item.cena}</Text>
+                    <Text>Date: {item.CenaZlota.data}</Text>
+                    <Text>Price for 1 gram of gold: {item.CenaZlota.cena}</Text>
                 </View>
             )}
-            ></FlatList>
+            ></FlatList> */}
         </View>
     )
 }
