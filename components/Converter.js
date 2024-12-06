@@ -9,8 +9,8 @@ const Convertor = ({ navigation, route }) => {
     // convertor properties.
     const [inputValue, setInputValue] = useState('');
     const [outputValue, setOutputValue] = useState('');
-    const [inputCurrency, setInputCurrency] = useState('CAD');
-    const [outputCurrency, setOutputCurrency] = useState('USD');
+    const [inputCurrency, setInputCurrency] = useState('');
+    const [outputCurrency, setOutputCurrency] = useState('');
     // API properties.
     const [no, setNo] = useState('');
     const [rates, setRates] = useState([]);
@@ -35,6 +35,10 @@ const Convertor = ({ navigation, route }) => {
                 // set default date to latest date from API.
                 setEffectiveDate(dates[0]);
                 setInputDate(dates[0]); // default date for TextInput.
+
+                // set default inputCurrency and outputCurrency.
+                setInputCurrency(data[0].rates[0].code);
+                setOutputCurrency(data[0].rates[1].code);
 
                 // API properties.
                 setNo(data[0].no);
@@ -74,19 +78,22 @@ const Convertor = ({ navigation, route }) => {
     }
 
     // handle currency conversion.
-    const handleConvert = (value) => {
-        // find exchange rates for the selected currencies.
-        const inputRate = rates.find(rate => rate.code === inputCurrency)?.mid;
-        const outputRate = rates.find(rate => rate.code === outputCurrency)?.mid;
+    useEffect(() => {
+        const convertCurrency = () => {
+            // find exchange rates for the selected currencies.
+            const inputRate = rates.find(rate => rate.code === inputCurrency)?.mid;
+            const outputRate = rates.find(rate => rate.code === outputCurrency)?.mid;
 
-        // if found, perform currency conversion.
-        if (inputRate && outputRate && inputValue) {
-            const convertedValue = ((parseFloat(value) * inputRate) / outputRate).toFixed(2);
-            setOutputValue(convertedValue);
-        } else { // else, clear output.
-            setOutputValue('');
+            // if found, perform currency conversion.
+            if (inputRate && outputRate && inputValue) {
+                const convertedValue = ((parseFloat(inputValue) * inputRate) / outputRate).toFixed(2);
+                setOutputValue(`$${convertedValue}`);
+            } else { // else, clear output.
+                setOutputValue('');
+            }
         }
-    }
+        convertCurrency();
+    }, [inputCurrency, outputCurrency, inputValue, rates]); // refreshes when any value in this array changes.
 
     // if data is loading.
     if (loading) {
@@ -129,10 +136,11 @@ const Convertor = ({ navigation, route }) => {
                     value='B'
                 />
 
-                <Picker.Item
+                {/* Table C works differently than A and B. */}
+                {/* <Picker.Item
                     label='Table C'
                     value='C'
-                />
+                /> */}
             </Picker>
 
 
@@ -142,10 +150,7 @@ const Convertor = ({ navigation, route }) => {
                 placeholder='Enter amount to convert.'
                 keyboardType='numeric'
                 value={inputValue}
-                onChangeText={(value) => {
-                    setInputValue(value);
-                    handleConvert(value);
-                }}
+                onChangeText={(value) => setInputValue(value)}
             />
 
             {/* currency to convert */}
@@ -153,10 +158,7 @@ const Convertor = ({ navigation, route }) => {
             <Picker
                 style={{ height: 75, width: '75%' }}
                 selectedValue={inputCurrency}
-                onValueChange={(value) => {
-                    setInputCurrency(value)
-                    handleConvert(inputValue);
-                }}
+                onValueChange={(value) => setInputCurrency(value)}
             >
                 {/* for-each rate available, create a selectable item. */}
                 {rates.map((rate) => (
@@ -173,17 +175,13 @@ const Convertor = ({ navigation, route }) => {
             <TextInput
                 placeholder='Converted amount.'
                 value={outputValue}
-                onChangeText={handleConvert}
                 editable={false}
             />
 
             <Picker
                 style={{ height: 75, width: '75%' }}
                 selectedValue={outputCurrency}
-                onValueChange={(value) => {
-                    setOutputCurrency(value)
-                    handleConvert(inputValue);
-                }}
+                onValueChange={(value) => setOutputCurrency(value)}
             >
                 {/* for-each rate available, create a selectable item. */}
                 {rates.map((rate) => (
@@ -194,6 +192,9 @@ const Convertor = ({ navigation, route }) => {
                     />
                 ))}
             </Picker>
+
+            {/* summary */}
+            <Text>{inputValue} {inputCurrency} equals {outputValue} {outputCurrency}.</Text>
         </View>
     )
 }
