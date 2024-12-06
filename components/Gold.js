@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react';
 import { Text, View, Button, TextInput, ActivityIndicator, FlatList } from 'react-native';
 import { styles } from '../App';
 /*TODO:
+the current price of gold is displayed here.
+historical prices can also be searched by inputting dates in two fields.
+    if one param, return that specific day.
+    if two params, return a range.
 this'll display the current rate of gold and the historical prices of it.
-If possible, a graph will display this data, easily visualizing the data for the user. If graphing is possible, then a graph will be displayed on all pages with applicable data.
 */
 
 const Gold = ({ navigation, route }) => {
@@ -43,12 +46,6 @@ const Gold = ({ navigation, route }) => {
         );
     }
 
-
-
-
-
-
-
     const dataFromApi = async () => {
         //const url = `https://api.nbp.pl/api/${urlData}`
         console.log("url: " + url)
@@ -69,6 +66,7 @@ const Gold = ({ navigation, route }) => {
         }
     }
     const generate = () => {
+        fetchGoldTimeline();
         // const fetchGoldTimeline = async() => {
         //     try {
         //     const response = await fetch(`https://api.nbp.pl/api/cenyzlota/${start}/${end}/?format=json`);
@@ -91,7 +89,7 @@ const Gold = ({ navigation, route }) => {
         //console.log("url: "+url)
         //navigation.navigate('Gold')
         //console.log("data "+urlData)
-        navigation.navigate('GoldList', {start: start, end: end})
+        // navigation.navigate('GoldList', { start: start, end: end })
     }
     // const list = () => {
     //     return (
@@ -113,6 +111,22 @@ const Gold = ({ navigation, route }) => {
     //     dataFromApi()
     //     list()
     // }, [urlData])
+
+    const fetchGoldTimeline = async () => {
+        console.log("start: " + start)
+        console.log("end: " + end)
+        try {
+            const response = await fetch(`https://api.nbp.pl/api/cenyzlota/${start}/${end}/?format=json`);
+            const data = await response.json();
+            setGoldData(data);
+            console.log(goldData)
+            //setLoading(false);
+        } catch (error) {
+            console.error(error);
+            //setLoading(false);
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Text>Gold</Text>
@@ -144,16 +158,16 @@ const Gold = ({ navigation, route }) => {
             <Text>Current gold price</Text>
             <Text>Date: {goldData.data}</Text>
             <Text>Price: {goldData.cena}</Text>
-            {/* <FlatList
+            <FlatList
             data={goldData}
             keyExtractor={({data}) => data.toString()}
             renderItem={({item}) => (
                 <View>
-                    <Text>Date: {item.CenaZlota.data}</Text>
-                    <Text>Price for 1 gram of gold: {item.CenaZlota.cena}</Text>
+                    <Text>Date: {item.data}</Text>
+                    <Text>Price for 1 gram of gold: {item.cena}</Text>
                 </View>
             )}
-            ></FlatList> */}
+            ></FlatList>
         </View>
     )
 }
