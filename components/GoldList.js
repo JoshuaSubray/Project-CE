@@ -4,7 +4,6 @@ import { styles } from '../App';
 
 const GoldList = ({navigation, route}) => {
     const [goldData, setGoldData] = useState([])
-    const [loading, setLoading] = useState(true);
     const {start} = route.params
     const {end} = route.params
     console.log("start: "+start)
@@ -17,37 +16,10 @@ const GoldList = ({navigation, route}) => {
             const data = await response.json();
             setGoldData(data);
             console.log(goldData)
-            //setLoading(false);
         } catch (error) {
             console.error(error);
-            //setLoading(false);
         }
     }
-    // if (loading) {
-    //     return (
-    //         <View>
-    //             <ActivityIndicator size="large" />
-    //             <Text>Loading...</Text>
-    //         </View>
-    //     );
-    // }
-    // const {api} = route.params
-    // console.log(api)
-    // const dataFromApi = async() => {
-    //     const url = api
-    //     try {
-    //         const response = await fetch(url)
-    //         console.log("url: "+url)
-    //         if (!response.ok) {
-    //             throw new Error(response.status);
-    //         }
-    //         const data = response.json()
-    //         setGoldData(data)
-    //         return data
-    //     } catch (error) {
-    //         console.log("Error: "+error)
-    //     }
-    // }
     useEffect(() => {
         fetchGoldTimeline()
     }, [])
