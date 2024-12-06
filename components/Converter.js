@@ -106,7 +106,7 @@ const Convertor = ({ navigation, route }) => {
     // if data is loading.
     if (loading) {
         return (
-            <View>
+            <View style={styles.container}>
                 <ActivityIndicator size="large" />
                 <Text>Loading...</Text>
             </View>
@@ -115,44 +115,34 @@ const Convertor = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            {/* select date */}
-            <Text>Date:</Text>
-            <TextInput
-                placeholder="YYYY-MM-DD"
-                value={inputDate}
-                onChangeText={handleDateChange}
-            />
+            <Text style={styles.title}>Converter:</Text>
 
-            {/* <Text>Date: {effectiveDate}</Text> */}
-            <Text>Table ID: {no}</Text>
+            {/* Date: */}
+            <View style={styles.inputContainer}>
+                <Text style={styles.label}>Date: </Text>
+                <TextInput
+                    style={styles.dateInput}
+                    placeholder="YYYY-MM-DD"
+                    value={inputDate}
+                    onChangeText={handleDateChange}
+                />
+            </View>
 
-            {/* Body: */}
-            {/* select table. */}
+            {/* Table: */}
+            <Text style={styles.label}>Table ID: {no}</Text>
             <Picker
-                style={{ height: 75, width: '75%' }}
+                style={styles.picker}
                 selectedValue={table}
                 onValueChange={(value) => setTable(value)}
             >
-                <Picker.Item
-                    label='Table A'
-                    value='A'
-                />
-
-                <Picker.Item
-                    label='Table B'
-                    value='B'
-                />
-
-                {/* Table C works differently than A and B. */}
-                {/* <Picker.Item
-                    label='Table C'
-                    value='C'
-                /> */}
+                <Picker.Item label='Table A' value='A' />
+                <Picker.Item label='Table B' value='B' />
+                {/* <Picker.Item label='Table C' value='C'/> */}
             </Picker>
-
 
             {/* Input: */}
             <TextInput
+                style={styles.textInput}
                 placeholder='Enter amount to convert.'
                 keyboardType='numeric'
                 value={inputValue}
@@ -160,9 +150,9 @@ const Convertor = ({ navigation, route }) => {
             />
 
             {/* currency to convert */}
-            <Text>Input Currency:</Text>
+            <Text style={styles.label}>Convert From:</Text>
             <Picker
-                style={{ height: 75, width: '75%' }}
+                style={styles.picker}
                 selectedValue={inputCurrency}
                 onValueChange={(value) => setInputCurrency(value)}
             >
@@ -176,15 +166,10 @@ const Convertor = ({ navigation, route }) => {
                 ))}
             </Picker>
 
-            {/* Output: */}
-            <TextInput
-                placeholder='Converted amount.'
-                value={outputValue}
-                editable={false}
-            />
-            <Text>Output Currency:</Text>
+            {/* converted currency. */}
+            <Text style={styles.label}>Convert To:</Text>
             <Picker
-                style={{ height: 75, width: '75%' }}
+                style={styles.picker}
                 selectedValue={outputCurrency}
                 onValueChange={(value) => setOutputCurrency(value)}
             >
@@ -198,8 +183,16 @@ const Convertor = ({ navigation, route }) => {
                 ))}
             </Picker>
 
+            {/* Output: */}
+            <TextInput
+                style={styles.resultText}
+                placeholder='Converted amount.'
+                value={outputValue}
+                editable={false}
+            />
+
             {/* summary */}
-            <Text> {/* only appears when all parameters are present. */}
+            <Text style={styles.resultText}> {/* only appears when all parameters are present. */}
                 {inputValue && inputCurrency && outputValue && outputCurrency ? (
                     `${inputValue} ${inputCurrency} equals ${outputValue} ${outputCurrency}.`) :
                     null}
