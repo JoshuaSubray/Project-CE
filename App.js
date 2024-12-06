@@ -18,8 +18,6 @@ react-native-screens
 
 const Stack = createNativeStackNavigator();
 
-// TODO: index is the home page. this'll have information and navigation to the program's functions.
-
 // navbar.
 function Index({ navigation }) {
   return (
@@ -63,8 +61,70 @@ export default function App() {
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f5f5f5',
+    padding: 20,
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 20,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+    width: '100%',
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#333',
+    marginRight: 10,
+  },
+  dateInput: {
+    flex: 1,
+    height: 50,
+    paddingLeft: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    backgroundColor: '#fff',
+    fontSize: 16,
+  },
+  picker: {
+    height: 50,
+    width: '100%',
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    backgroundColor: '#fff',
+  },
+  textInput: {
+    height: 50,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    paddingLeft: 10,
+    backgroundColor: '#fff',
+    fontSize: 16,
+    marginBottom: 15,
+  },
+  resultText: {
+    height: 50,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    paddingLeft: 10,
+    backgroundColor: '#fff',
+    fontSize: 16,
+    color: '#333',
+    textAlign: 'center',
+    marginTop: 10,
   },
 });
