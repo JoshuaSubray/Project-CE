@@ -3,7 +3,7 @@ import { Text, View, Button, TextInput, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { styles } from '../App';
 
-const Convertor = ({ navigation, route }) => {
+const Converter = ({ navigation, route }) => {
     // component properties.
     const [loading, setLoading] = useState(true);
     // convertor properties.
@@ -115,7 +115,7 @@ const Convertor = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Converter:</Text>
+            <Text style={styles.title}>Converter</Text>
 
             {/* Date: */}
             <View style={styles.inputContainer}>
@@ -201,4 +201,4 @@ const Convertor = ({ navigation, route }) => {
     )
 }
 
-export default Convertor;
+export default Converter;
