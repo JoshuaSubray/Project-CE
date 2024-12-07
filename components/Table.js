@@ -8,6 +8,8 @@ const Table = ({ navigation, route }) => {
   const [inputDate, setInputDate] = useState('');
   const [availableDates, setAvailableDates] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+
   const fetchRates = async () => {
     setLoading(true);
     try {
@@ -36,6 +38,11 @@ const Table = ({ navigation, route }) => {
     fetchRates();
   }, [table, inputDate]);
 
+  const filteredRates = rates.filter(rate =>
+    rate.currency.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    rate.code.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Currency Table Viewer</Text>
@@ -54,59 +61,86 @@ const Table = ({ navigation, route }) => {
         value={inputDate}
         onChangeText={(value) => setInputDate(value)}
       />
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Search by currency or code"
+        value={searchTerm}
+        onChangeText={(value) => setSearchTerm(value)}
+      />
       {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="#007BFF" />
       ) : (
         <FlatList
-          data={rates}
+          data={filteredRates}
           keyExtractor={(item) => item.code}
           renderItem={({ item }) => (
             <View style={styles.listItem}>
               <Text style={styles.listText}>{`Currency: ${item.currency}`}</Text>
               <Text style={styles.listText}>{`Code: ${item.code}`}</Text>
-              <Text style={styles.listText}>{`Rate: ${item.mid}`}</Text>
+              {table === 'C' ? (
+                <>
+                  <Text style={styles.listText}>{`Bid Rate: ${item.bid}`}</Text>
+                  <Text style={styles.listText}>{`Ask Rate: ${item.ask}`}</Text>
+                </>
+              ) : (
+                <Text style={styles.listText}>{`Rate: ${item.mid}`}</Text>
+              )}
             </View>
           )}
-          ListEmptyComponent={<Text>No data found for the selected date.</Text>}
+          ListEmptyComponent={<Text style={styles.emptyText}>No data found for the selected date or search term.</Text>}
         />
       )}
     </View>
   );
 };
 
-// // const styles = StyleSheet.create({
-// //   container: {
-// //     flex: 1,
-// //     padding: 16,
-// //     backgroundColor: '#fff',
-// //   },
-// //   heading: {
-// //     fontSize: 18,
-// //     fontWeight: 'bold',
-// //     marginBottom: 10,
-// //   },
-// //   picker: {
-// //     height: 50,
-// //     marginBottom: 20,
-// //     backgroundColor: '#f0f0f0',
-// //     borderRadius: 5,
-// //   },
-// //   searchBar: {
-// //     height: 40,
-// //     borderColor: '#ccc',
-// //     borderWidth: 1,
-// //     marginBottom: 20,
-// //     paddingHorizontal: 8,
-// //     borderRadius: 5,
-// //   },
-// //   listItem: {
-// //     padding: 10,
-// //     borderBottomWidth: 1,
-// //     borderBottomColor: '#ccc',
-// //   },
-// //   listText: {
-// //     fontSize: 16,
-// //   },
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     padding: 16,
+//     backgroundColor: '#f8f9fa',
+//   },
+//   heading: {
+//     fontSize: 20,
+//     fontWeight: 'bold',
+//     color: '#212529',
+//     marginBottom: 15,
+//     textAlign: 'center',
+//   },
+//   picker: {
+//     height: 50,
+//     marginBottom: 20,
+//     backgroundColor: '#e9ecef',
+//     borderRadius: 8,
+//     paddingHorizontal: 10,
+//   },
+//   searchBar: {
+//     height: 40,
+//     borderColor: '#ced4da',
+//     borderWidth: 1,
+//     marginBottom: 20,
+//     paddingHorizontal: 12,
+//     borderRadius: 8,
+//     backgroundColor: '#ffffff',
+//   },
+//   listItem: {
+//     padding: 15,
+//     borderBottomWidth: 1,
+//     borderBottomColor: '#dee2e6',
+//     backgroundColor: '#f8f9fa',
+//     borderRadius: 8,
+//     marginBottom: 10,
+//   },
+//   listText: {
+//     fontSize: 16,
+//     color: '#495057',
+//   },
+//   emptyText: {
+//     textAlign: 'center',
+//     fontSize: 16,
+//     color: '#6c757d',
+//     marginTop: 20,
+//   },
 // });
 
 export default Table;
