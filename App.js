@@ -125,4 +125,38 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
   },
+
+  // my css
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#fff',
+  },
+  heading: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  picker: {
+    height: 50,
+    marginBottom: 20,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 5,
+  },
+  searchBar: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginBottom: 20,
+    paddingHorizontal: 8,
+    borderRadius: 5,
+  },
+  listItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  listText: {
+    fontSize: 16,
+  },
 });

@@ -8,8 +8,6 @@ const Table = ({ navigation, route }) => {
   const [inputDate, setInputDate] = useState('');
   const [availableDates, setAvailableDates] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Fetch data based on selected table and date
   const fetchRates = async () => {
     setLoading(true);
     try {
@@ -41,8 +39,6 @@ const Table = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Currency Table Viewer</Text>
-
-      {/* Table Picker */}
       <Picker
         selectedValue={table}
         onValueChange={(value) => setTable(value)}
@@ -52,16 +48,12 @@ const Table = ({ navigation, route }) => {
         <Picker.Item label="Table B" value="B" />
         <Picker.Item label="Table C" value="C" />
       </Picker>
-
-      {/* Date Input */}
       <TextInput
         style={styles.searchBar}
         placeholder="YYYY-MM-DD"
         value={inputDate}
         onChangeText={(value) => setInputDate(value)}
       />
-
-      {/* Loading Indicator */}
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
@@ -82,39 +74,39 @@ const Table = ({ navigation, route }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#fff',
-  },
-  heading: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  picker: {
-    height: 50,
-    marginBottom: 20,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 5,
-  },
-  searchBar: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 8,
-    borderRadius: 5,
-  },
-  listItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  listText: {
-    fontSize: 16,
-  },
-});
+// // const styles = StyleSheet.create({
+// //   container: {
+// //     flex: 1,
+// //     padding: 16,
+// //     backgroundColor: '#fff',
+// //   },
+// //   heading: {
+// //     fontSize: 18,
+// //     fontWeight: 'bold',
+// //     marginBottom: 10,
+// //   },
+// //   picker: {
+// //     height: 50,
+// //     marginBottom: 20,
+// //     backgroundColor: '#f0f0f0',
+// //     borderRadius: 5,
+// //   },
+// //   searchBar: {
+// //     height: 40,
+// //     borderColor: '#ccc',
+// //     borderWidth: 1,
+// //     marginBottom: 20,
+// //     paddingHorizontal: 8,
+// //     borderRadius: 5,
+// //   },
+// //   listItem: {
+// //     padding: 10,
+// //     borderBottomWidth: 1,
+// //     borderBottomColor: '#ccc',
+// //   },
+// //   listText: {
+// //     fontSize: 16,
+// //   },
+// });
 
 export default Table;
