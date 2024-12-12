@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { styles } from '../App';
 
 const Table = ({ navigation, route }) => {
   const [table, setTable] = useState('A');
@@ -93,54 +94,5 @@ const Table = ({ navigation, route }) => {
     </View>
   );
 };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: 16,
-//     backgroundColor: '#f8f9fa',
-//   },
-//   heading: {
-//     fontSize: 20,
-//     fontWeight: 'bold',
-//     color: '#212529',
-//     marginBottom: 15,
-//     textAlign: 'center',
-//   },
-//   picker: {
-//     height: 50,
-//     marginBottom: 20,
-//     backgroundColor: '#e9ecef',
-//     borderRadius: 8,
-//     paddingHorizontal: 10,
-//   },
-//   searchBar: {
-//     height: 40,
-//     borderColor: '#ced4da',
-//     borderWidth: 1,
-//     marginBottom: 20,
-//     paddingHorizontal: 12,
-//     borderRadius: 8,
-//     backgroundColor: '#ffffff',
-//   },
-//   listItem: {
-//     padding: 15,
-//     borderBottomWidth: 1,
-//     borderBottomColor: '#dee2e6',
-//     backgroundColor: '#f8f9fa',
-//     borderRadius: 8,
-//     marginBottom: 10,
-//   },
-//   listText: {
-//     fontSize: 16,
-//     color: '#495057',
-//   },
-//   emptyText: {
-//     textAlign: 'center',
-//     fontSize: 16,
-//     color: '#6c757d',
-//     marginTop: 20,
-//   },
-// });
 
 export default Table;
